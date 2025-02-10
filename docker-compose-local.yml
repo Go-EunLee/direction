@@ -1,0 +1,23 @@
+version: "3.8"
+services:
+  care-recommendation-redis:
+    container_name: care-recommendation-redis
+    build:
+      dockerfile: Dockerfile
+      context: ./redis
+    image: goeunlee/care-recommendation-redis
+    ports:
+      - "6379:6379"
+  care-recommendation-database:
+    container_name: care-recommendation-database
+    build:
+      dockerfile: Dockerfile
+      context: ./database
+    image: goeunlee/care-recommendation-database
+    environment:
+      - MARIADB_DATABASE=care-recommendation
+      - MARIADB_ROOT_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+    volumes:
+      - ./database/config:/etc/mysql/conf.d
+    ports:
+      - "3306:3306"
